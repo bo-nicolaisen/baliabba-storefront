@@ -1,0 +1,19 @@
+#featuredProducts {
+  width: 100%;
+  height: 700px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: justify;
+}
+
+#featuredProducts figure {
+  width: 25%;
+  display: inline-block;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+#featuredProducts img {
+  max-height: 300px;
+  max-width: 100%;
+}
