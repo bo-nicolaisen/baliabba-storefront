@@ -44,6 +44,7 @@ function ProductsRecived(productData) {
 function CreateProductView(myCards) {
     //console.log(myCards);
 
+
     myCards.forEach(product => {
         console.log(product);
 
