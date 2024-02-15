@@ -1,15 +1,20 @@
 
 // globals
 const productSection = document.getElementById('featuredProducts');
-const navElenent = document.getElementById('navigation');
+const navElement = document.getElementById('navigation');
 
 let myProducts = null
 
 
+// page load
 GetProductData()
 GetCategoryData()
 
-// model
+
+/* Model code------------------------------------------------------------- */
+
+
+
 function GetProductData() {
 
     fetch('https://dummyjson.com/products?limit=100')
@@ -23,10 +28,9 @@ function GetProductData() {
         .then((json) => {
             ProductsRecived(json)
         });
-
 }
 
-// model
+
 function GetCategoryData() {
 
     fetch('https://dummyjson.com/products/categories')
@@ -38,19 +42,14 @@ function GetCategoryData() {
         )
 
         .then((json) => {
-            Categoriesrecived(json)
+            ReciveCategoryData(json)
         });
-
 }
 
 
-function Categoriesrecived(categoryData) {
-    // temporary code
-    //console.log(categoryData);
-    CreateNavigation(categoryData)
-}
+/* controller code------------------------------------------------------------- */
 
-// controller
+//----------------------------------------------------------------------
 function ProductsRecived(productData) {
 
     //console.log(productData)
@@ -66,70 +65,45 @@ function ProductsRecived(productData) {
     // CreateProductView(myProducts)
 }
 
+//----------------------------------------------------------------------
+function ReciveCategoryData(myCategories) {
+    //console.log(myCategories);
+    CreateNavBar(myCategories)
 
-
-
-//view code
-function CreateNavigation(categoryArray) {
-    // temporary code
-    let myHtml = ""
-    myHtml += `<div onclick="NavigationCallback('all')" >All</div>`
-    categoryArray.forEach((category) => {
-        myHtml += `<div onclick="NavigationCallback('${category}')" >${category}</div>`
-
-    });
-
-
-    navElenent.innerHTML = myHtml
 }
 
-function NavigationCallback(myCategory) {
 
-    let productByCategory = []
-    if (myCategory === 'all') {
-        CreateProductView(myProducts);
-    }
-    else {
+function NavCallBack(myCategory) {
+    console.log(myCategory);
+
+    if (myCategory == "all") {
+        CreateProductView(myProducts)
+
+    } else {
+
+        console.log(myCategory);
+
+        let mySelectedProducts = []
+
         myProducts.forEach(product => {
 
-            if (product.category == myCategory) {
-                productByCategory.push(product)
+
+            if (myCategory == product.category) {
+
+                console.log(product);
+                mySelectedProducts.push(product)
             }
-        }
-        )
 
-        CreateProductView(productByCategory);
 
+        });
+        //console.log(mySelectedProducts);
+
+        CreateProductView(mySelectedProducts)
     }
 
 }
 
-
-
-// view code
-function CreateProductView(myCards) {
-    //console.log(myCards);
-    clearApp()
-
-    myCards.forEach(product => {
-        // console.log(product);
-
-
-        let myHTML = `<figure onclick="ProductCallback(${product.id})" ><h2>${product.title}</h2><img src="${product.thumbnail}"><h3>PRIS: ${product.price} rabat: ${product.discountPercentage}</h3></figure>`
-
-
-        productSection.innerHTML += myHTML
-    })
-}
-
-
-
-
-
-
-
-
-// controller
+//----------------------------------------------------------------------
 function ProductCallback(myId) {
 
 
@@ -158,13 +132,44 @@ function ProductCallback(myId) {
 
     }
 
-
-
 }
 
 
 
-//view code
+/* view code------------------------------------------------------------- */
+
+function CreateNavBar(mycategories) {
+    //navElement
+    let myHTML = `<button onclick="NavCallBack('all')">All</button> `
+
+
+    mycategories.forEach(element => {
+        // console.log(element);
+        myHTML += `<button onclick="NavCallBack('${element}')">${element}</button> `
+    });
+
+
+    navElement.innerHTML = myHTML
+}
+
+//----------------------------------------------------------------------
+function CreateProductView(myCards) {
+    //console.log(myCards);
+    clearApp()
+
+    myCards.forEach(product => {
+        // console.log(product);
+
+
+        let myHTML = `<figure onclick="ProductCallback(${product.id})" ><h2>${product.title}</h2><img src="${product.thumbnail}"><h3>PRIS: ${product.price} rabat: ${product.discountPercentage}</h3></figure>`
+
+
+        productSection.innerHTML += myHTML
+    })
+}
+
+
+//----------------------------------------------------------------------
 function buildProduct(product) {
 
     let myHTML = `<figure class="productDetails" onclick="GetProductData()" ><h2>${product.title}</h2>
@@ -181,7 +186,8 @@ function buildProduct(product) {
     productSection.innerHTML = myHTML
 }
 
-// view code
+
+//----------------------------------------------------------------------
 function clearApp() {
     productSection.innerHTML = ""
 }
