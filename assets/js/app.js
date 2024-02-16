@@ -3,6 +3,8 @@
 const productSection = document.getElementById('featuredProducts');
 const navElement = document.getElementById('navigation');
 
+
+
 let myProducts = null
 
 
@@ -12,8 +14,6 @@ GetCategoryData()
 
 
 /* Model code------------------------------------------------------------- */
-
-
 
 function GetProductData() {
 
@@ -26,14 +26,15 @@ function GetProductData() {
         )
 
         .then((json) => {
+            console.log(json);
             ProductsRecived(json)
         });
 }
 
 
-function GetCategoryData() {
+function GetProductsByCategory(myCategoryURL) {
 
-    fetch('https://dummyjson.com/products/categories')
+    fetch(myCategoryURL)
 
         .then((result) => {
             //console.log(result);
@@ -42,12 +43,52 @@ function GetCategoryData() {
         )
 
         .then((json) => {
-            ReciveCategoryData(json)
+
+
+
+            recivedProductsByCategory(json)
+        });
+
+}
+
+
+function GetCategoryData() {
+
+    fetch('https://dummyjson.com/products/categories')
+
+        .then((result) => {
+            return result.json()
+        }
+        )
+
+        .then((json) => {
+            //console.log(json);
+            CategoryRecived(json)
         });
 }
 
 
+
+
+
 /* controller code------------------------------------------------------------- */
+
+function recivedProductsByCategory(productsByC) {
+
+    let myProductArray = productsByC.products
+
+    CreateProductView(myProductArray)
+
+}
+
+
+
+function CategoryRecived(CategoryData) {
+    // skriv lækker kode der kan sortere kategorier her.. nu sender vi bare alt videre.
+    // console.log(CategoryData);
+
+    CreateNavBar(CategoryData)
+}
 
 //----------------------------------------------------------------------
 function ProductsRecived(productData) {
@@ -66,42 +107,36 @@ function ProductsRecived(productData) {
 }
 
 //----------------------------------------------------------------------
-function ReciveCategoryData(myCategories) {
-    //console.log(myCategories);
-    CreateNavBar(myCategories)
+
+function NavCallback(CategoryName) {
+    console.log(CategoryName);
+    /*   // vi har Data
+  
+      let myCategoryProducts = []
+  
+      myProducts.forEach(product => {
+          if (product.category == CategoryName) {
+              myCategoryProducts.push(product)
+          }
+      });
+      
+    CreateProductView(myCategoryProducts)
+     */
+
+
+    // get data from API  bug API url og send videre
+    let myCategoryURL = `https://dummyjson.com/products/category/${CategoryName}`
+
+    GetProductsByCategory(myCategoryURL)
+
+
+
 
 }
 
-
-function NavCallBack(myCategory) {
-    console.log(myCategory);
-
-    if (myCategory == "all") {
-        CreateProductView(myProducts)
-
-    } else {
-
-        console.log(myCategory);
-
-        let mySelectedProducts = []
-
-        myProducts.forEach(product => {
+//
 
 
-            if (myCategory == product.category) {
-
-                console.log(product);
-                mySelectedProducts.push(product)
-            }
-
-
-        });
-        //console.log(mySelectedProducts);
-
-        CreateProductView(mySelectedProducts)
-    }
-
-}
 
 //----------------------------------------------------------------------
 function ProductCallback(myId) {
@@ -135,21 +170,20 @@ function ProductCallback(myId) {
 }
 
 
-
 /* view code------------------------------------------------------------- */
 
-function CreateNavBar(mycategories) {
-    //navElement
-    let myHTML = `<button onclick="NavCallBack('all')">All</button> `
+function CreateNavBar(Categorydata) {
 
+    let myNavHTML = ""
 
-    mycategories.forEach(element => {
-        // console.log(element);
-        myHTML += `<button onclick="NavCallBack('${element}')">${element}</button> `
+    Categorydata.forEach(categoryName => {
+
+        let myButton = `<button onclick="NavCallback('${categoryName}')" >${categoryName}</button>`
+        myNavHTML += myButton
     });
 
+    navElement.innerHTML = myNavHTML
 
-    navElement.innerHTML = myHTML
 }
 
 //----------------------------------------------------------------------
