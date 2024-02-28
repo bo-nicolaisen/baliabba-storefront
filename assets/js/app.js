@@ -245,6 +245,10 @@ function ProductCallback(myId) {
 
 }
 
+function LogoCallback() {
+    GetProductData()
+}
+
 
 function InitializeBasket() {
     //myBasket
@@ -373,15 +377,6 @@ function UpdateBasketIcon(items) {
 
 function CreateNavBar(Categorydata) {
 
-    /* let myNavHTML = ""
-
-    Categorydata.forEach(categoryName => {
-
-        let myButton = `<button onclick="NavCallback('${categoryName}')" >${categoryName}</button>`
-        myNavHTML += myButton
-    }); */
-
-
     navElement.innerHTML = ''
 
     Categorydata.forEach(superCatData => {
@@ -432,7 +427,7 @@ function CreateProductView(myCards) {
 //----------------------------------------------------------------------
 function buildProduct(product) {
 
-    let myHTML = `<section id="featuredProducts"><figure class="productDetails"  ><h2>${product.title}</h2>
+    let myHTML = `<section class="productDetails"><figure><h2>${product.title}</h2>
   
     <img src="${product.images[0]}">
     <img src="${product.images[2]}">
