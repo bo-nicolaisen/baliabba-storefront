@@ -245,10 +245,13 @@ function ProductCallback(myId) {
 
 }
 
+//----------------------------------------------------------------------
+
 function LogoCallback() {
     GetProductData()
 }
 
+//----------------------------------------------------------------------
 
 function InitializeBasket() {
     //myBasket
@@ -274,6 +277,8 @@ function InitializeBasket() {
 
 }
 
+//----------------------------------------------------------------------
+
 function AddToBasket(productId) {
 
     let mybasketstring = localStorage.getItem('myBasket')
@@ -285,6 +290,8 @@ function AddToBasket(productId) {
     let mySerializedData = JSON.stringify(myBasket)
     localStorage.setItem('myBasket', mySerializedData)
 }
+
+//----------------------------------------------------------------------
 
 function BasketIconCallback() {
     let mybasketstring = localStorage.getItem('myBasket')
@@ -305,28 +312,36 @@ function BasketIconCallback() {
     BuildBasket(myProducts)
 }
 
+//----------------------------------------------------------------------
+
 function BasketRemove(id) {
-    console.log('remove: ' + id);
-    BasketIconCallback()
-}
 
 
-// helper functions
+    let mybasketstring = localStorage.getItem('myBasket')
+    let myBasket = JSON.parse(mybasketstring)
 
-function getProduct(id) {
-    let myProduct = false
-    myProducts.forEach(product => {
-        if (id == product.id) {
-            myProduct = product
+
+    myBasket.products.forEach((productId, index) => {
+        if (id == productId) {
+            myBasket.products.splice(index, 1)
+            return;
         }
     });
 
-    return myProduct
+    let mySerializedData = JSON.stringify(myBasket)
+    localStorage.setItem('myBasket', mySerializedData)
+
+    BasketIconCallback()
 }
+
+//----------------------------------------------------------------------
+
 
 function paymentCallBack() {
 
 }
+
+//----------------------------------------------------------------------
 
 function BasketClear() {
     let newBasket = {
@@ -338,6 +353,22 @@ function BasketClear() {
     localStorage.setItem('myBasket', mySerializedData)
 
     BasketIconCallback()
+}
+
+// helper functions
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+
+
+function getProduct(id) {
+    let myProduct = false
+    myProducts.forEach(product => {
+        if (id == product.id) {
+            myProduct = product
+        }
+    });
+
+    return myProduct
 }
 
 

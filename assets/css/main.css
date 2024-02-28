@@ -116,6 +116,11 @@ footer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 1rem;
+}
+
+footer section {
+  width: 27%;
 }
 
 #app {
@@ -173,6 +178,8 @@ footer {
 }
 
 #featuredProducts figure {
+  display: flex;
+  flex-direction: column;
   min-width: 100px;
   max-width: 300px;
   aspect-ratio: 4/5;
@@ -186,6 +193,10 @@ footer {
   object-fit: cover;
   aspect-ratio: 1/1;
   cursor: pointer;
+}
+
+#featuredProducts button {
+  align-self: flex-end;
 }
 
 .productDetails {
