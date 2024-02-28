@@ -1,9 +1,42 @@
+@import "assets/css/clear.css";
+
+#basketIcon {
+  max-height: 50px;
+  cursor: pointer;
+}
+
+#navigation {
+  background-color: rgb(255, 106, 0);
+  display: flex;
+  flex-direction: row;
+}
+
+.navCategories {
+  color: antiquewhite;
+  margin-right: 2em;
+}
+
+.navCategories ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.navCategories li {
+}
+
+.navRollover {
+  background-color: rgb(255, 106, 0);
+}
+
+.navRollover:hover {
+  background-color: rgb(122, 52, 2);
+}
+
 #featuredProducts {
   width: 100%;
-  height: 700px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  text-align: justify;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 #featuredProducts figure {
@@ -27,18 +60,27 @@
   display: inline-block;
 }
 
-#navigation {
+#basketWiev {
+  display: flex;
+  flex-direction: column;
 }
 
-#navigation div {
-  display: inline-block;
-  background-color: antiquewhite;
-  padding: 20px;
+#basketWiev figure {
+  background-color: rgb(240, 240, 240);
+  display: flex;
+  flex-direction: row;
+  max-height: 300px;
+  width: 90%;
 }
 
-#navigation div:hover {
+#basketWiev img {
+  height: 100px;
+  object-fit: cover;
   display: inline-block;
-  background-color: rgb(56, 41, 22);
-  color: antiquewhite;
-  padding: 20px;
+}
+
+#basketWiev button {
+  height: 20px;
+  object-fit: cover;
+  display: inline-block;
 }

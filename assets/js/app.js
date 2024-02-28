@@ -1,16 +1,18 @@
 
 // globals
-const productSection = document.getElementById('featuredProducts');
+const productSection = document.getElementById('app');
 const navElement = document.getElementById('navigation');
+const basketIcon = document.getElementById('basketIcon')
 
 
 
 let myProducts = null
 
 
+
 // page load
-GetProductData()
-GetCategoryData()
+InitApp()
+
 
 
 /* Model code------------------------------------------------------------- */
@@ -26,7 +28,7 @@ function GetProductData() {
         )
 
         .then((json) => {
-            console.log(json);
+            //console.log(json);
             ProductsRecived(json)
         });
 }
@@ -73,6 +75,14 @@ function GetCategoryData() {
 
 /* controller code------------------------------------------------------------- */
 
+
+
+function InitApp() {
+    InitializeBasket()
+    GetProductData()
+    GetCategoryData()
+}
+
 function recivedProductsByCategory(productsByC) {
 
     let myProductArray = productsByC.products
@@ -84,10 +94,97 @@ function recivedProductsByCategory(productsByC) {
 
 
 function CategoryRecived(CategoryData) {
-    // skriv lækker kode der kan sortere kategorier her.. nu sender vi bare alt videre.
-    // console.log(CategoryData);
+    // hoved kategori arrays
+    let myElectronics = []
+    let myCosmetics = []
+    let myVehicles = []
+    let womensFashion = []
+    let mensFashion = []
+    let myMisc = []
 
-    CreateNavBar(CategoryData)
+    CategoryData.forEach(category => {
+
+        switch (category) {
+
+            case 'laptops':
+            case 'lighting':
+            case 'smartphones':
+
+                myElectronics.push(category)
+                break;
+
+            case 'fragrances':
+            case 'skincare':
+                myCosmetics.push(category)
+
+                break;
+
+            case 'automotive':
+            case 'motorcycle':
+                myVehicles.push(category)
+
+                break;
+
+            case 'tops':
+            case 'womens-dresses':
+            case 'womens-shoes':
+            case 'womens-watches':
+            case 'womens-bags':
+            case 'womens-jewellery':
+
+                womensFashion.push(category)
+
+                break;
+
+            case 'tops':
+            case 'mens-shirts':
+            case 'mens-shoes':
+            case 'mens-watches':
+                mensFashion.push(category)
+
+                break;
+
+            default:
+
+                myMisc.push(category)
+                break;
+        }
+
+    });
+
+
+    // build datastructure to view code
+    let myNavigationData = [
+        {
+            superCategoryname: 'Electronics',
+            subCategories: myElectronics
+        },
+        {
+            superCategoryname: 'Cosmetics',
+            subCategories: myCosmetics
+        },
+        {
+            superCategoryname: 'Vehicles',
+            subCategories: myVehicles
+        },
+        {
+            superCategoryname: 'mens fashion',
+            subCategories: mensFashion
+        },
+        {
+            superCategoryname: 'womans fashion',
+            subCategories: womensFashion
+        },
+        {
+            superCategoryname: 'misc',
+            subCategories: myMisc
+        }
+
+    ]
+
+
+
+    CreateNavBar(myNavigationData)
 }
 
 //----------------------------------------------------------------------
@@ -110,30 +207,11 @@ function ProductsRecived(productData) {
 
 function NavCallback(CategoryName) {
     console.log(CategoryName);
-    /*   // vi har Data
-  
-      let myCategoryProducts = []
-  
-      myProducts.forEach(product => {
-          if (product.category == CategoryName) {
-              myCategoryProducts.push(product)
-          }
-      });
-      
-    CreateProductView(myCategoryProducts)
-     */
-
-
     // get data from API  bug API url og send videre
     let myCategoryURL = `https://dummyjson.com/products/category/${CategoryName}`
 
     GetProductsByCategory(myCategoryURL)
-
-
-
-
 }
-
 //
 
 
@@ -141,9 +219,7 @@ function NavCallback(CategoryName) {
 //----------------------------------------------------------------------
 function ProductCallback(myId) {
 
-
-
-    console.log(myId);
+    //console.log(myId);
     let myClickedProduct = null
 
 
@@ -161,7 +237,7 @@ function ProductCallback(myId) {
     }
     else {
         // produkt
-        console.log(myClickedProduct)
+        //console.log(myClickedProduct)
         clearApp();
         buildProduct(myClickedProduct)
 
@@ -170,19 +246,141 @@ function ProductCallback(myId) {
 }
 
 
+function InitializeBasket() {
+    //myBasket
+    let myBasket = localStorage.getItem('myBasket')
+
+
+    if (!myBasket) {
+        //console.log('no basket');
+        let newBasket = {
+            products: [],
+            total: 0
+        }
+        UpdateBasketIcon(0)
+        mySerializedData = JSON.stringify(newBasket)
+        localStorage.setItem('myBasket', mySerializedData)
+
+    } else {
+
+        let myData = JSON.parse(myBasket)
+        UpdateBasketIcon(myData.products.length)
+
+    }
+
+}
+
+function AddToBasket(productId) {
+
+    let mybasketstring = localStorage.getItem('myBasket')
+    let myBasket = JSON.parse(mybasketstring)
+    myBasket.products.push(productId);
+
+    UpdateBasketIcon(myBasket.products.length)
+
+    let mySerializedData = JSON.stringify(myBasket)
+    localStorage.setItem('myBasket', mySerializedData)
+}
+
+function BasketIconCallback() {
+    let mybasketstring = localStorage.getItem('myBasket')
+    let myBasket = JSON.parse(mybasketstring)
+
+
+
+    let myProducts = []
+
+    myBasket.products.forEach(productId => {
+        let myProduct = getProduct(productId)
+        if (myProduct) {
+
+            myProducts.push(myProduct)
+        }
+    });
+
+    BuildBasket(myProducts)
+}
+
+function BasketRemove(id) {
+    console.log('remove: ' + id);
+    BasketIconCallback()
+}
+
+
+// helper functions
+
+function getProduct(id) {
+    let myProduct = false
+    myProducts.forEach(product => {
+        if (id == product.id) {
+            myProduct = product
+        }
+    });
+
+    return myProduct
+}
+
+
 /* view code------------------------------------------------------------- */
+
+function BuildBasket(products) {
+    clearApp()
+
+    let myBasketHTML = '<section id="basketWiev">'
+    products.forEach(product => {
+        // console.log(product);
+
+        let myHTML = `<figure><img src="${product.thumbnail}"><h2>${product.title}</h2><p>PRIS: ${product.price}</p><button onclick="BasketRemove(${product.id})">remove</button></figure>`
+
+
+        myBasketHTML += myHTML
+    })
+    myBasketHTML += '</section>'
+
+    productSection.innerHTML = myBasketHTML
+}
+
+
+function UpdateBasketIcon(items) {
+    console.log(items);
+    let myUpdateElement = document.getElementById('basketProductText')
+    myUpdateElement.innerHTML = items
+
+}
 
 function CreateNavBar(Categorydata) {
 
-    let myNavHTML = ""
+    /* let myNavHTML = ""
 
     Categorydata.forEach(categoryName => {
 
         let myButton = `<button onclick="NavCallback('${categoryName}')" >${categoryName}</button>`
         myNavHTML += myButton
+    }); */
+
+
+    navElement.innerHTML = ''
+
+    Categorydata.forEach(superCatData => {
+
+        // ul from category array
+
+        let mySubCats = '<ul>'
+        superCatData.subCategories.forEach(subCatName => {
+            let myListElement = `<li><div class="navRollover"onClick="NavCallback('${subCatName}')">${subCatName}</div></li>`
+            mySubCats += myListElement
+        });
+        mySubCats += '</ul>'
+
+        //console.log(mySubCats);
+        //console.log(superCat.superCategoryname);
+        let myCatHTML = `<div class="navCategories"><h3>${superCatData.superCategoryname}</h3>
+        ${mySubCats}
+        </div>`
+        navElement.innerHTML += myCatHTML
     });
 
-    navElement.innerHTML = myNavHTML
+
 
 }
 
@@ -191,29 +389,33 @@ function CreateProductView(myCards) {
     //console.log(myCards);
     clearApp()
 
+    let myHTML = '<section id="featuredProducts">'
+
     myCards.forEach(product => {
         // console.log(product);
 
+        myHTML += `<figure onclick="ProductCallback(${product.id})" ><h2>${product.title}</h2><img src="${product.thumbnail}"><h3>PRIS: ${product.price} rabat: ${product.discountPercentage}</h3></figure>`
 
-        let myHTML = `<figure onclick="ProductCallback(${product.id})" ><h2>${product.title}</h2><img src="${product.thumbnail}"><h3>PRIS: ${product.price} rabat: ${product.discountPercentage}</h3></figure>`
-
-
-        productSection.innerHTML += myHTML
     })
+
+    myHTML += '</section>'
+
+    productSection.innerHTML = myHTML
 }
 
 
 //----------------------------------------------------------------------
 function buildProduct(product) {
 
-    let myHTML = `<figure class="productDetails" onclick="GetProductData()" ><h2>${product.title}</h2>
+    let myHTML = `<section id="featuredProducts"><figure class="productDetails"  ><h2>${product.title}</h2>
   
     <img src="${product.images[0]}">
     <img src="${product.images[2]}">
     <img src="${product.images[3]}">
     <h3>PRIS: ${product.price}</h3>
     <p>${product.description}</p>
-    </figure>
+    <button onclick="AddToBasket(${product.id})" >add to basket</button>
+    </figure></section>
     `
 
 
