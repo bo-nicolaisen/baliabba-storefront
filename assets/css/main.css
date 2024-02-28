@@ -1,7 +1,54 @@
-@import "assets/css/clear.css";
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 2srem;
+}
+
+.logo {
+  max-width: 100px;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+  background-color: rgb(255, 106, 0);
+  color: antiquewhite;
+  border: 0px;
+  padding: 1em;
+}
+
+button:hover {
+  background-color: rgb(122, 52, 2);
+}
+
+footer {
+  background-color: rgb(255, 106, 0);
+  color: antiquewhite;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#app {
+}
 
 #basketIcon {
-  max-height: 50px;
+  max-width: 60px;
+  aspect-ratio: 1/1;
   cursor: pointer;
 }
 
@@ -9,11 +56,18 @@
   background-color: rgb(255, 106, 0);
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  padding: 1rem;
 }
 
 .navCategories {
   color: antiquewhite;
   margin-right: 2em;
+}
+
+.navCategories h3 {
+  font-size: 2rem;
+  border-bottom: 1px solid white;
 }
 
 .navCategories ul {
@@ -22,10 +76,12 @@
 }
 
 .navCategories li {
+  font-size: 1em;
 }
 
 .navRollover {
   background-color: rgb(255, 106, 0);
+  cursor: pointer;
 }
 
 .navRollover:hover {
@@ -40,16 +96,17 @@
 }
 
 #featuredProducts figure {
-  width: 25%;
   aspect-ratio: 4/5;
-  display: inline-block;
-  border: 2px solid black;
-  border-radius: 10px;
+  background-color: rgb(245, 245, 245);
+  box-shadow: 5px 5px 7px 0px rgba(0, 0, 0, 0.13);
+  margin: 1em;
 }
 
 #featuredProducts img {
   width: 100%;
   object-fit: cover;
+  aspect-ratio: 1/1;
+  cursor: pointer;
 }
 
 .productDetails {
@@ -61,16 +118,25 @@
 }
 
 #basketWiev {
+  width: 80%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  padding-top: 1em;
+}
+
+#basketWiev section {
+  width: 90%;
 }
 
 #basketWiev figure {
   background-color: rgb(240, 240, 240);
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   max-height: 300px;
-  width: 90%;
+  margin: 0;
+  margin-bottom: 1em;
 }
 
 #basketWiev img {
@@ -81,6 +147,4 @@
 
 #basketWiev button {
   height: 20px;
-  object-fit: cover;
-  display: inline-block;
 }

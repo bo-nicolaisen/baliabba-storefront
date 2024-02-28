@@ -320,6 +320,22 @@ function getProduct(id) {
     return myProduct
 }
 
+function paymentCallBack() {
+
+}
+
+function BasketClear() {
+    let newBasket = {
+        products: [],
+        total: 0
+    }
+    UpdateBasketIcon(0)
+    mySerializedData = JSON.stringify(newBasket)
+    localStorage.setItem('myBasket', mySerializedData)
+
+    BasketIconCallback()
+}
+
 
 /* view code------------------------------------------------------------- */
 
@@ -327,14 +343,21 @@ function BuildBasket(products) {
     clearApp()
 
     let myBasketHTML = '<section id="basketWiev">'
-    products.forEach(product => {
-        // console.log(product);
+    if (products.length > 0) {
+        products.forEach(product => {
+            // console.log(product);
 
-        let myHTML = `<figure><img src="${product.thumbnail}"><h2>${product.title}</h2><p>PRIS: ${product.price}</p><button onclick="BasketRemove(${product.id})">remove</button></figure>`
+            let myHTML = `<figure><img src="${product.thumbnail}"><h2>${product.title}</h2><p>PRIS: ${product.price}</p><button onclick="BasketRemove(${product.id})">remove</button></figure>`
 
 
-        myBasketHTML += myHTML
-    })
+            myBasketHTML += myHTML
+        })
+        myBasketHTML += `<section id="basketTools"><button onclick="paymentCallBack()">Go to payment</button><button onclick="BasketClear()">clear basket</button></section>`
+    } else {
+        myBasketHTML += `<h1>basket empty go buy stuff</h1><button onclick="GetProductData()">OK</button>`
+
+    }
+
     myBasketHTML += '</section>'
 
     productSection.innerHTML = myBasketHTML
@@ -342,7 +365,7 @@ function BuildBasket(products) {
 
 
 function UpdateBasketIcon(items) {
-    console.log(items);
+
     let myUpdateElement = document.getElementById('basketProductText')
     myUpdateElement.innerHTML = items
 
@@ -394,7 +417,9 @@ function CreateProductView(myCards) {
     myCards.forEach(product => {
         // console.log(product);
 
-        myHTML += `<figure onclick="ProductCallback(${product.id})" ><h2>${product.title}</h2><img src="${product.thumbnail}"><h3>PRIS: ${product.price} rabat: ${product.discountPercentage}</h3></figure>`
+        myHTML += `<figure><h2>${product.title}</h2><img onclick="ProductCallback(${product.id})" src="${product.thumbnail}"><h3>PRIS: ${product.price} rabat: ${product.discountPercentage}</h3>
+         <button onclick="AddToBasket(${product.id})" >add to basket</button>
+        </figure>`
 
     })
 
