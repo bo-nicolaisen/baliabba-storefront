@@ -152,6 +152,8 @@ function CategoryRecived(CategoryData) {
 
     });
 
+    // add all to misc
+    myMisc.push('All')
 
     // build datastructure to view code
     let myNavigationData = [
@@ -208,9 +210,17 @@ function ProductsRecived(productData) {
 function NavCallback(CategoryName) {
     console.log(CategoryName);
     // get data from API  bug API url og send videre
-    let myCategoryURL = `https://dummyjson.com/products/category/${CategoryName}`
+    if (CategoryName == "All") {
+        CreateProductView(myProducts)
+    }
+    else {
+        let myCategoryURL = `https://dummyjson.com/products/category/${CategoryName}`
 
-    GetProductsByCategory(myCategoryURL)
+        GetProductsByCategory(myCategoryURL)
+    }
+
+
+
 }
 //
 
