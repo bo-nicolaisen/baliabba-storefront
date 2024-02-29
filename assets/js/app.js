@@ -71,6 +71,20 @@ function GetCategoryData() {
 
 
 
+function SaveBasketData(basketData) {
+    let mySerializedData = JSON.stringify(basketData)
+
+    localStorage.setItem('myBasket', mySerializedData)
+
+}
+
+
+function ReadLocalStorageData() {
+
+    let mybasketstring = localStorage.getItem('myBasket')
+    let myBasket = JSON.parse(mybasketstring)
+    return myBasket
+}
 
 
 /* controller code------------------------------------------------------------- */
@@ -265,47 +279,62 @@ function InitializeBasket() {
     //myBasket
     let myBasket = localStorage.getItem('myBasket')
 
-
     if (!myBasket) {
-        //console.log('no basket');
+        console.log('no basket');
+
         let newBasket = {
             products: [],
             total: 0
         }
+
+
         UpdateBasketIcon(0)
-        mySerializedData = JSON.stringify(newBasket)
-        localStorage.setItem('myBasket', mySerializedData)
+
+        /*    let mySerializedData = JSON.stringify(newBasket)
+   
+           localStorage.setItem('myBasket', mySerializedData) */
+
+        SaveBasketData(newBasket)
 
     } else {
 
         let myData = JSON.parse(myBasket)
+
         UpdateBasketIcon(myData.products.length)
 
     }
 
 }
 
+
+
+
 //----------------------------------------------------------------------
 
 function AddToBasket(productId) {
 
-    let mybasketstring = localStorage.getItem('myBasket')
-    let myBasket = JSON.parse(mybasketstring)
+    /*  let mybasketstring = localStorage.getItem('myBasket')
+     let myBasket = JSON.parse(mybasketstring) */
+
+    let myBasket = ReadLocalStorageData()
+
 
     myBasket.products.push(productId);
 
     UpdateBasketIcon(myBasket.products.length)
 
-    let mySerializedData = JSON.stringify(myBasket)
-    localStorage.setItem('myBasket', mySerializedData)
+    /*  let mySerializedData = JSON.stringify(myBasket)
+     localStorage.setItem('myBasket', mySerializedData) */
+
+    SaveBasketData(myBasket)
 }
 
 //----------------------------------------------------------------------
 
 function BasketIconCallback() {
-    let mybasketstring = localStorage.getItem('myBasket')
-    let myBasket = JSON.parse(mybasketstring)
-
+    /*  let mybasketstring = localStorage.getItem('myBasket')
+     let myBasket = JSON.parse(mybasketstring) */
+    let myBasket = ReadLocalStorageData()
 
 
     let myProducts = []
@@ -326,9 +355,9 @@ function BasketIconCallback() {
 function BasketRemove(id) {
 
 
-    let mybasketstring = localStorage.getItem('myBasket')
-    let myBasket = JSON.parse(mybasketstring)
-
+    /*  let mybasketstring = localStorage.getItem('myBasket')
+     let myBasket = JSON.parse(mybasketstring) */
+    let myBasket = ReadLocalStorageData()
 
     myBasket.products.forEach((productId, index) => {
         if (id == productId) {
@@ -336,9 +365,11 @@ function BasketRemove(id) {
             return;
         }
     });
+    /* 
+        let mySerializedData = JSON.stringify(myBasket)
+        localStorage.setItem('myBasket', mySerializedData) */
 
-    let mySerializedData = JSON.stringify(myBasket)
-    localStorage.setItem('myBasket', mySerializedData)
+    SaveBasketData(myBasket)
 
     BasketIconCallback()
 }
@@ -347,7 +378,7 @@ function BasketRemove(id) {
 
 
 function paymentCallBack() {
-
+    alert('weee i am getting paid');
 }
 
 //----------------------------------------------------------------------
@@ -358,8 +389,10 @@ function BasketClear() {
         total: 0
     }
     UpdateBasketIcon(0)
-    mySerializedData = JSON.stringify(newBasket)
-    localStorage.setItem('myBasket', mySerializedData)
+    /*   mySerializedData = JSON.stringify(newBasket)
+      localStorage.setItem('myBasket', mySerializedData) */
+
+    SaveBasketData(newBasket)
 
     BasketIconCallback()
 }
