@@ -222,11 +222,9 @@ function NavCallback(CategoryName) {
 
 
 }
-//
-
-
 
 //----------------------------------------------------------------------
+
 function ProductCallback(myId) {
 
     //console.log(myId);
@@ -293,6 +291,7 @@ function AddToBasket(productId) {
 
     let mybasketstring = localStorage.getItem('myBasket')
     let myBasket = JSON.parse(mybasketstring)
+
     myBasket.products.push(productId);
 
     UpdateBasketIcon(myBasket.products.length)
