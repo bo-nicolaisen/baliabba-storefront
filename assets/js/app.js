@@ -464,15 +464,15 @@ function ShowMobileNav() {
 }
 
 function CloseMobileNav() {
+    if (window.innerWidth < 600) {
+        let navBox = document.getElementById('menuLists')
 
-    let navBox = document.getElementById('menuLists')
 
+        if (!navBox.classList.contains("hidden")) {
+            navBox.classList.toggle('hidden')
+        }
 
-    if (!navBox.classList.contains("hidden")) {
-        navBox.classList.toggle('hidden')
     }
-
-
 
 }
 
@@ -600,6 +600,7 @@ function buildProduct(product) {
 //----------------------------------------------------------------------
 function clearApp() {
     productSection.innerHTML = ""
+    CloseMobileNav()
 }
 
 
