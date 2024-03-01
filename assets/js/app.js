@@ -106,26 +106,20 @@ addEventListener("resize", (event) => {
     if (window.innerWidth < 600) {
 
         let navIcon = document.getElementById('navIcon')
-        let navBox = document.getElementById('menuLists')
+
 
         if (navIcon.classList.contains("hidden")) {
-            navIcon.classList.toggle('hidden')
-            navBox.classList.toggle('hidden')
+            ShowMobileNav();
         }
-
 
 
     } else {
 
-
         let navIcon = document.getElementById('navIcon')
-        let navBox = document.getElementById('menuLists')
 
-        if (navIcon.classList.contains("hidden")) {
 
-        } else {
-            navIcon.classList.toggle('hidden')
-            navBox.classList.toggle('hidden')
+        if (!navIcon.classList.contains("hidden")) {
+            HideMobileNav()
         }
 
     }
@@ -259,7 +253,8 @@ function ProductsRecived(productData) {
 //----------------------------------------------------------------------
 
 function NavCallback(CategoryName) {
-    console.log(CategoryName);
+    //console.log(CategoryName);
+    CloseMobileNav()
     // get data from API  bug API url og send videre
     if (CategoryName == "All") {
         CreateProductView(myProducts)
@@ -456,6 +451,47 @@ function ToggleMenu() {
 
 
 /* view code------------------------------------------------------------- */
+
+function ShowMobileNav() {
+
+    let navIcon = document.getElementById('navIcon')
+    let navBox = document.getElementById('menuLists')
+
+    if (navIcon.classList.contains("hidden")) {
+        navIcon.classList.toggle('hidden')
+        navBox.classList.toggle('hidden')
+    }
+}
+
+function CloseMobileNav() {
+
+    let navBox = document.getElementById('menuLists')
+
+
+    if (!navBox.classList.contains("hidden")) {
+        navBox.classList.toggle('hidden')
+    }
+
+
+
+}
+
+function HideMobileNav() {
+    let navIcon = document.getElementById('navIcon')
+    let navBox = document.getElementById('menuLists')
+
+
+    if (window.innerWidth > 600) {
+        if (!navIcon.classList.contains("hidden")) {
+            navIcon.classList.toggle('hidden')
+            navBox.classList.toggle('hidden')
+        }
+
+    }
+
+
+}
+
 
 function BuildBasket(products) {
     clearApp()
