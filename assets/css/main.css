@@ -75,7 +75,7 @@ header {
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 2em;
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -114,12 +114,14 @@ footer {
   color: antiquewhite;
   display: flex;
   flex-direction: row;
+
   justify-content: space-between;
 }
 
 footer section {
-  width: 27%;
+  max-width: 27%;
   margin: 2rem;
+  overflow-wrap: break-word;
 }
 
 #app {
@@ -134,15 +136,25 @@ footer section {
 
 #navigation {
   background-color: rgb(255, 106, 0);
+}
+
+.menuListsLook {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   padding: 1rem;
 }
 
+#navIcon {
+  max-width: 40px;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+}
+
 .navCategories {
   color: antiquewhite;
   margin-right: 2em;
+  display: inline-block;
 }
 
 .navCategories h3 {
@@ -244,4 +256,22 @@ footer section {
 
 #basketWiev button {
   height: 20px;
+}
+@media only screen and (max-width: 600px) {
+  footer {
+    background-color: rgb(255, 106, 0);
+    color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+  }
+
+  footer section {
+    max-width: 100%;
+    margin: 2rem;
+    overflow-wrap: break-word;
+  }
+}
+
+.hidden {
+  display: none;
 }
