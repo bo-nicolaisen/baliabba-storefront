@@ -92,17 +92,18 @@ function ReadLocalStorageData() {
 
 
 function InitApp() {
+
     InitializeBasket()
     GetProductData()
     GetCategoryData()
+
 }
 
 
 // breakpoint detection
-addEventListener("resize", (event) => {
+addEventListener("resize", resizeCheck);
 
-
-
+function resizeCheck() {
     if (window.innerWidth < 600) {
 
         let navIcon = document.getElementById('navIcon')
@@ -123,9 +124,7 @@ addEventListener("resize", (event) => {
         }
 
     }
-
-});
-
+}
 
 
 function recivedProductsByCategory(productsByC) {
@@ -554,6 +553,7 @@ function CreateNavBar(Categorydata) {
     navHTML += '</section>'
 
     navElement.innerHTML += navHTML
+    resizeCheck()
 }
 
 //----------------------------------------------------------------------
@@ -600,7 +600,7 @@ function buildProduct(product) {
 //----------------------------------------------------------------------
 function clearApp() {
     productSection.innerHTML = ""
-    CloseMobileNav()
+
 }
 
 
