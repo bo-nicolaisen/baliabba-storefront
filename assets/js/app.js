@@ -1,8 +1,9 @@
 
 // globals
 const productSection = document.getElementById('app');
-const navElement = document.getElementById('navigation');
+const navElement = document.getElementById('navigation')
 const basketIcon = document.getElementById('basketIcon')
+
 
 
 
@@ -73,15 +74,14 @@ function GetCategoryData() {
 
 function SaveBasketData(basketData) {
     let mySerializedData = JSON.stringify(basketData)
-
     localStorage.setItem('myBasket', mySerializedData)
-
 }
 
 
 function ReadLocalStorageData() {
 
     let mybasketstring = localStorage.getItem('myBasket')
+    // @ts-ignore
     let myBasket = JSON.parse(mybasketstring)
     return myBasket
 }
@@ -96,6 +96,43 @@ function InitApp() {
     GetProductData()
     GetCategoryData()
 }
+
+
+// breakpoint detection
+addEventListener("resize", (event) => {
+
+
+
+    if (window.innerWidth < 600) {
+
+        let navIcon = document.getElementById('navIcon')
+        let navBox = document.getElementById('menuLists')
+
+        if (navIcon.classList.contains("hidden")) {
+            navIcon.classList.toggle('hidden')
+            navBox.classList.toggle('hidden')
+        }
+
+
+
+    } else {
+
+
+        let navIcon = document.getElementById('navIcon')
+        let navBox = document.getElementById('menuLists')
+
+        if (navIcon.classList.contains("hidden")) {
+
+        } else {
+            navIcon.classList.toggle('hidden')
+            navBox.classList.toggle('hidden')
+        }
+
+    }
+
+});
+
+
 
 function recivedProductsByCategory(productsByC) {
 
@@ -313,8 +350,6 @@ function InitializeBasket() {
 
 function AddToBasket(productId) {
 
-    /*  let mybasketstring = localStorage.getItem('myBasket')
-     let myBasket = JSON.parse(mybasketstring) */
 
     let myBasket = ReadLocalStorageData()
 
@@ -413,6 +448,12 @@ function getProduct(id) {
     return myProduct
 }
 
+function ToggleMenu() {
+    let myMenues = document.getElementById('menuLists')
+    myMenues.classList.toggle('hidden')
+
+}
+
 
 /* view code------------------------------------------------------------- */
 
@@ -452,6 +493,9 @@ function CreateNavBar(Categorydata) {
 
     navElement.innerHTML = ''
 
+    let navHTML = ' <img id="navIcon" class="hidden" onClick="ToggleMenu()" src="assets/img/burger.svg"><section id="menuLists" class="menuListsLook">'
+
+
     Categorydata.forEach(superCatData => {
 
         // ul from category array
@@ -465,14 +509,15 @@ function CreateNavBar(Categorydata) {
 
         //console.log(mySubCats);
         //console.log(superCat.superCategoryname);
-        let myCatHTML = `<div class="navCategories"><h3>${superCatData.superCategoryname}</h3>
+        navHTML += `<div class="navCategories"><h3>${superCatData.superCategoryname}</h3>
         ${mySubCats}
         </div>`
-        navElement.innerHTML += myCatHTML
+
     });
 
+    navHTML += '</section>'
 
-
+    navElement.innerHTML += navHTML
 }
 
 //----------------------------------------------------------------------
