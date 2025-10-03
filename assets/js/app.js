@@ -242,7 +242,7 @@ function ProductsRecived(productData) {
 
     let myFeaturedProducts = [];
 
-    myFeaturedProducts.push(myProducts[8], myProducts[29], myProducts[19])
+    myFeaturedProducts.push(myProducts[2], myProducts[30], myProducts[7])
     //console.log(myFeaturedProducts);
 
     CreateProductView(myFeaturedProducts)
